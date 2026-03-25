@@ -9,8 +9,8 @@ namespace PowerUpSystem.Scripts
         protected string name;
         protected float duration;
 
-        public abstract void ApplyEffects(); // player
-        public abstract void RemoveEffects(); // player
+        public abstract void ApplyEffects(PlayerForPowerUp player); // player
+        public abstract void RemoveEffects(PlayerForPowerUp player); // player
         public abstract PowerUp Clone();
     }
 }

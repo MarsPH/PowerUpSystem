@@ -4,12 +4,12 @@ namespace PowerUpSystem.Scripts
     {
         private PowerUp powerUpWrapped;
 
-        public override void ApplyEffects()
+        public override void ApplyEffects(PlayerForPowerUp player)
         {
             throw new System.NotImplementedException();    
         }
 
-        public override void RemoveEffects()
+        public override void RemoveEffects(PlayerForPowerUp player)
         {
             throw new System.NotImplementedException();
         }
