@@ -532,6 +532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 598250682}
+  - component: {fileID: 598250683}
   m_Layer: 0
   m_Name: PowerUpSystem
   m_TagString: Untagged
@@ -554,6 +555,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &598250683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598250681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1330d24b37de7b5448d6ef3b3998e5ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerUpSystem.Scripts.PowerUpSystemFacade
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,6 +745,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpSystem.Scripts.PlayerForPowerUp
   _inventoryManager: {fileID: 894099737}
   _playerPowerUpController: {fileID: 894099736}
+  _activateKey: 101
 --- !u!114 &894099736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +805,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a53c72deb7921194aab0d9203c5e907a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpSystem.Scripts.PowerUpPickup
+  _powerUpType: 0
+  _customName: 
+  _durationOverride: -1
 --- !u!65 &1336868667
 BoxCollider:
   m_ObjectHideFlags: 0

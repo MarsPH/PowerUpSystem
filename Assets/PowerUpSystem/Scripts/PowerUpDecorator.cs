@@ -2,21 +2,31 @@ namespace PowerUpSystem.Scripts
 {
     public class PowerUpDecorator : PowerUp
     {
-        private PowerUp powerUpWrapped;
+        private readonly PowerUp powerUpWrapped;
+
+        public PowerUpDecorator(PowerUp wrapped)
+        {
+            powerUpWrapped = wrapped;
+            if (wrapped != null)
+            {
+                name = wrapped.Name;
+                duration = wrapped.Duration;
+            }
+        }
 
         public override void ApplyEffects(PlayerForPowerUp player)
         {
-            throw new System.NotImplementedException();    
+            powerUpWrapped?.ApplyEffects(player);
         }
 
         public override void RemoveEffects(PlayerForPowerUp player)
         {
-            throw new System.NotImplementedException();
+            powerUpWrapped?.RemoveEffects(player);
         }
 
         public override PowerUp Clone()
         {
-            throw new System.NotImplementedException();
+            return new PowerUpDecorator(powerUpWrapped?.Clone());
         }
     
     }

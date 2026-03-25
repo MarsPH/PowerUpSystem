@@ -4,24 +4,48 @@ namespace PowerUpSystem.Scripts
 {
     public class PowerUpPickup : MonoBehaviour
     {
+        [Header("PowerUp Setup")]
+        [SerializeField] private PowerUpType _powerUpType = PowerUpType.SpeedBoost;
+        [SerializeField] private string _customName = "";
+        [SerializeField] private float _durationOverride = -1f;
+
         private PowerUp _prototype;
-        
+
         public PowerUp Prototype => _prototype;
-        
 
         private void Awake()
         {
-            _prototype = new SpeedBoostPowerUp();
+            BuildPrototypeIfMissing();
         }
-        
-        // Called when the player touches this pickup.
-        // If this pickup has a valid PowerUp prototype, it creates a clone of that PowerUp,
-        // tries to add it to the player's inventory, and disables the pickup if the add succeeds.
+
         public void OnPlayerTouch(PlayerForPowerUp player)
         {
-            if (_prototype == null) return;
+            if (player == null)
+            {
+                return;
+            }
+
+            if (PowerUpSystemFacade.Instance != null)
+            {
+                PowerUpSystemFacade.Instance.CollectPickup(this, player);
+                return;
+            }
+
+            if (_prototype == null)
+            {
+                Debug.LogWarning("[PowerUp] Pickup has no prototype.");
+                return;
+            }
+
+            InventoryManager inventory = player.GetInventoryManager();
+            if (inventory == null)
+            {
+                Debug.LogWarning("[PowerUp] Player inventory is missing.");
+                return;
+            }
+
             PowerUp clonedPowerUp = _prototype.Clone();
-            if (player.GetInventoryManager().AddPowerUp(clonedPowerUp))
+            if (inventory.AddPowerUp(clonedPowerUp))
             {
                 gameObject.SetActive(false);
             }
@@ -29,12 +53,22 @@ namespace PowerUpSystem.Scripts
 
         public void ResetWithPrototype(PowerUp prototype)
         {
-            _prototype = prototype;
+            _prototype = prototype ?? PowerUpFactory.Create(_powerUpType, _customName, _durationOverride);
+            gameObject.SetActive(true);
         }
-        
+
+        private void BuildPrototypeIfMissing()
+        {
+            if (_prototype != null)
+            {
+                return;
+            }
+
+            _prototype = PowerUpFactory.Create(_powerUpType, _customName, _durationOverride);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.gameObject.name);
             PlayerForPowerUp player = other.GetComponent<PlayerForPowerUp>();
             if (player != null)
             {

@@ -1,31 +1,42 @@
-using UnityEngine;
-
 namespace PowerUpSystem.Scripts
 {
-   public class ActivePowerUpEffect : MonoBehaviour
-   {
-      private PowerUp _effect;
-      private float _remainingTime;
+    public class ActivePowerUpEffect
+    {
+        private readonly PowerUp _effect;
+        private float _remainingTime;
 
-      public void StartEffect(PlayerForPowerUp player)
-      {
-         
-      }
+        public PowerUp Effect => _effect;
+        public float RemainingTime => _remainingTime;
 
-      public void TickEffect(PlayerForPowerUp player, float deltaTime)
-      {
-         
-      }
+        public ActivePowerUpEffect(PowerUp effect)
+        {
+            _effect = effect;
+            _remainingTime = effect?.Duration ?? 0f;
+        }
 
-      public bool IsExpired()
-      {
-         return _remainingTime <= 0f;
-      }
+        public void Start(PlayerForPowerUp player)
+        {
+            _effect?.ApplyEffects(player);
+        }
 
-      public void EndEffect(PlayerForPowerUp player)
-      {
-         _effect = null;
-      }
-   
-   }
+        public void Tick(PlayerForPowerUp player, float deltaTime)
+        {
+            if (_effect == null || IsExpired())
+            {
+                return;
+            }
+
+            _remainingTime -= deltaTime < 0f ? 0f : deltaTime;
+        }
+
+        public bool IsExpired()
+        {
+            return _remainingTime <= 0f;
+        }
+
+        public void End(PlayerForPowerUp player)
+        {
+            _effect?.RemoveEffects(player);
+        }
+    }
 }
