@@ -13,7 +13,7 @@ namespace PowerUpSystem.Scripts
 
         public void ResetWithPrototype(PowerUp prototype)
         {
-            
+            _prototype = prototype;
         }
     }
 }
