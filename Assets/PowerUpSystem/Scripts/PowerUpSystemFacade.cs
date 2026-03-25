@@ -35,7 +35,16 @@ namespace PowerUpSystem.Scripts
 
         public void ActivateSelected(PlayerForPowerUp player)
         {
+            InventoryManager inventory = player.GetInventoryManager();
+            PowerUp selectedPowerUp = inventory.GetSelectedPowerUp();
+            if (selectedPowerUp == null)
+            {
+                Debug.Log("No PowerUp Selected");
+                return;
+            }
+            player.GetPowerUpController().Activate(selectedPowerUp, player);
             
+            inventory.RemoveSelectedPowerUp();
         }
 
         public void UpdateEffects(PlayerForPowerUp player, float deltaTime)

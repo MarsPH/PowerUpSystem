@@ -13,5 +13,12 @@ namespace PowerUpSystem.Scripts
         {
             return _playerPowerUpController;
         }
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                PowerUpSystemFacade.Instance.ActivateSelected(this);
+            }
+        }
 }
 }

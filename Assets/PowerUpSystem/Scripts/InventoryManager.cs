@@ -23,7 +23,7 @@ namespace PowerUpSystem.Scripts
 
         }
 
-        public PowerUp RemoveSelectedPowerUp(PowerUp powerUp)
+        public PowerUp RemoveSelectedPowerUp()
         {
             if (_powerUps.Count == 0) return null;
 

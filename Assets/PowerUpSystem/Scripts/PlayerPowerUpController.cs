@@ -7,9 +7,9 @@ namespace PowerUpSystem.Scripts
     {
         private List<ActivePowerUpEffect> _activeEffects;
 
-        public void Active(PowerUp effect, PlayerForPowerUp player)
+        public void Activate(PowerUp powerUp, PlayerForPowerUp player)
         {
-            
+            powerUp.ApplyEffects(player);
         }
 
         public void UpdateEffects(PlayerForPowerUp player, float deltaTime)
