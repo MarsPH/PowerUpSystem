@@ -11,6 +11,7 @@ namespace PowerUpSystem.Scripts
 
         public int Count => _powerUps?.Count ?? 0;
         public int Capacity => _capacity;
+        public int SelectedIndex => _selectedIndex;
 
         private void Awake()
         {
@@ -119,6 +120,32 @@ namespace PowerUpSystem.Scripts
         public bool IsFull()
         {
             return _powerUps != null && _powerUps.Count >= _capacity;
+        }
+
+        public PowerUpSlotData[] GetSlotsForUI(bool fillToCapacity = true)
+        {
+            int slotCount = fillToCapacity ? _capacity : Count;
+            if (slotCount < 0)
+            {
+                slotCount = 0;
+            }
+
+            PowerUpSlotData[] slots = new PowerUpSlotData[slotCount];
+            for (int i = 0; i < slotCount; i++)
+            {
+                bool hasPowerUp = _powerUps != null && i < _powerUps.Count && _powerUps[i] != null;
+                if (!hasPowerUp)
+                {
+                    slots[i] = new PowerUpSlotData(false, string.Empty, 0f, false);
+                    continue;
+                }
+
+                PowerUp powerUp = _powerUps[i];
+                bool isSelected = i == _selectedIndex;
+                slots[i] = new PowerUpSlotData(true, powerUp.Name, powerUp.Duration, isSelected);
+            }
+
+            return slots;
         }
 
     }
