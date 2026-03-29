@@ -14,6 +14,9 @@ namespace PowerUpSystem.Scripts
         [Tooltip("Order: Top, Right, Bottom, Left")]
         [SerializeField] private PowerUpSlotUI[] _slots;
         [SerializeField] private PowerUpIconMap _iconMap;
+        [Header("Procedural ring (optional)")]
+        [Tooltip("Draws the donut, hub, and selection highlight. Place as first child under this HUD so icons render on top.")]
+        [SerializeField] private RadialRingSegmentsGraphic _ringGraphic;
 
         private void Awake()
         {
@@ -25,6 +28,11 @@ namespace PowerUpSystem.Scripts
             if (_iconMap == null)
             {
                 _iconMap = GetComponent<PowerUpIconMap>();
+            }
+
+            if (_ringGraphic == null)
+            {
+                _ringGraphic = GetComponentInChildren<RadialRingSegmentsGraphic>(true);
             }
         }
 
@@ -47,6 +55,8 @@ namespace PowerUpSystem.Scripts
                 return;
             }
 
+            SyncRingSelection(inventory);
+
             PowerUpSlotData[] data = inventory.GetSlotsForUI(true);
             for (int i = 0; i < _slots.Length; i++)
             {
@@ -66,6 +76,11 @@ namespace PowerUpSystem.Scripts
 
         private void ClearSlots()
         {
+            if (_ringGraphic != null)
+            {
+                _ringGraphic.SelectedSegmentIndex = -1;
+            }
+
             PowerUpSlotData empty = new PowerUpSlotData(false, string.Empty, 0f, false, null);
             for (int i = 0; i < _slots.Length; i++)
             {
@@ -74,6 +89,22 @@ namespace PowerUpSystem.Scripts
                     _slots[i].Bind(empty, null);
                 }
             }
+        }
+
+        private void SyncRingSelection(InventoryManager inventory)
+        {
+            if (_ringGraphic == null)
+            {
+                return;
+            }
+
+            if (inventory.Count == 0 || inventory.SelectedIndex < 0)
+            {
+                _ringGraphic.SelectedSegmentIndex = -1;
+                return;
+            }
+
+            _ringGraphic.SelectedSegmentIndex = inventory.SelectedIndex;
         }
     }
 }
