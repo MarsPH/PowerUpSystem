@@ -14,6 +14,8 @@ namespace PowerUpSystem.Scripts
             duration = powerUpDuration;
         }
 
+        public override PowerUpType? GetUiType() => PowerUpType.AntiBounce;
+
         public override void ApplyEffects(PlayerForPowerUp player)
         {
             Debug.Log($"[PowerUp] {Name} applied to {player?.name ?? "Unknown Player"} (debug bounce reduction on).");

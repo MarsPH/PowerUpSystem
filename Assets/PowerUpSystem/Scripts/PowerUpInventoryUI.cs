@@ -6,12 +6,18 @@ namespace PowerUpSystem.Scripts
     {
         [SerializeField] private PlayerForPowerUp _player;
         [SerializeField] private PowerUpSlotUI[] _slots;
+        [SerializeField] private PowerUpIconMap _iconMap;
 
         private void Awake()
         {
             if (_player == null)
             {
                 _player = FindObjectOfType<PlayerForPowerUp>();
+            }
+
+            if (_iconMap == null)
+            {
+                _iconMap = GetComponent<PowerUpIconMap>();
             }
         }
 
@@ -34,7 +40,7 @@ namespace PowerUpSystem.Scripts
                 {
                     if (_slots[i] != null)
                     {
-                        _slots[i].Bind(new PowerUpSlotData(false, string.Empty, 0f, false));
+                        _slots[i].Bind(new PowerUpSlotData(false, string.Empty, 0f, false, null), null);
                     }
                 }
                 return;
@@ -50,8 +56,9 @@ namespace PowerUpSystem.Scripts
 
                 PowerUpSlotData slotData = i < data.Length
                     ? data[i]
-                    : new PowerUpSlotData(false, string.Empty, 0f, false);
-                _slots[i].Bind(slotData);
+                    : new PowerUpSlotData(false, string.Empty, 0f, false, null);
+                Sprite icon = _iconMap != null ? _iconMap.GetIcon(slotData.UiType) : null;
+                _slots[i].Bind(slotData, icon);
             }
         }
     }

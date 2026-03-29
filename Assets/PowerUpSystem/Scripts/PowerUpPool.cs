@@ -5,9 +5,19 @@ namespace PowerUpSystem.Scripts
 {
     public class PowerUpPool : MonoBehaviour
     {
+        [Tooltip("Only used when Get() runs and the queue is empty — e.g. runtime spawning. Not needed if pickups only come from scene objects recycled via Release().")]
         [SerializeField] private PowerUpPickup _pickupPrefab;
+        [Tooltip("Inactive pickups are parented here for a tidy hierarchy. If unset, defaults to this object.")]
         [SerializeField] private Transform _poolParent;
         private readonly Queue<PowerUpPickup> _pickupPool = new Queue<PowerUpPickup>();
+
+        private void Awake()
+        {
+            if (_poolParent == null)
+            {
+                _poolParent = transform;
+            }
+        }
 
         public PowerUpPickup Get()
         {
@@ -25,7 +35,7 @@ namespace PowerUpSystem.Scripts
 
             if (_pickupPrefab != null)
             {
-                return Instantiate(_pickupPrefab, _poolParent);
+                return Instantiate(_pickupPrefab, _poolParent != null ? _poolParent : transform);
             }
 
             Debug.LogWarning("[PowerUp] Pool is empty and no prefab is configured.");
@@ -40,10 +50,7 @@ namespace PowerUpSystem.Scripts
             }
 
             pickup.gameObject.SetActive(false);
-            if (_poolParent != null)
-            {
-                pickup.transform.SetParent(_poolParent);
-            }
+            pickup.transform.SetParent(_poolParent != null ? _poolParent : transform);
 
             _pickupPool.Enqueue(pickup);
         }

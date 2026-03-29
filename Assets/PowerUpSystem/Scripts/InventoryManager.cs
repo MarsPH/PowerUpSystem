@@ -136,13 +136,13 @@ namespace PowerUpSystem.Scripts
                 bool hasPowerUp = _powerUps != null && i < _powerUps.Count && _powerUps[i] != null;
                 if (!hasPowerUp)
                 {
-                    slots[i] = new PowerUpSlotData(false, string.Empty, 0f, false);
+                    slots[i] = new PowerUpSlotData(false, string.Empty, 0f, false, null);
                     continue;
                 }
 
                 PowerUp powerUp = _powerUps[i];
                 bool isSelected = i == _selectedIndex;
-                slots[i] = new PowerUpSlotData(true, powerUp.Name, powerUp.Duration, isSelected);
+                slots[i] = new PowerUpSlotData(true, powerUp.Name, powerUp.Duration, isSelected, powerUp.GetUiType());
             }
 
             return slots;

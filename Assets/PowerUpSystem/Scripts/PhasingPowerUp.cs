@@ -14,6 +14,8 @@ namespace PowerUpSystem.Scripts
             duration = powerUpDuration;
         }
 
+        public override PowerUpType? GetUiType() => PowerUpType.Phasing;
+
         public override void ApplyEffects(PlayerForPowerUp player)
         {
             Debug.Log($"[PowerUp] {Name} applied to {player?.name ?? "Unknown Player"} (debug phasing on).");

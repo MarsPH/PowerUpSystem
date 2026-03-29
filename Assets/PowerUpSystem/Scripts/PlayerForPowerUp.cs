@@ -7,6 +7,9 @@ namespace PowerUpSystem.Scripts
         [SerializeField] private InventoryManager _inventoryManager;
         [SerializeField] private PlayerPowerUpController _playerPowerUpController;
         [SerializeField] private KeyCode _activateKey = KeyCode.E;
+        [Header("Inventory selection (highlights one slot, then press Activate)")]
+        [SerializeField] private KeyCode _cycleNextKey = KeyCode.RightBracket;
+        [SerializeField] private KeyCode _cyclePreviousKey = KeyCode.LeftBracket;
 
         private void Awake()
         {
@@ -33,6 +36,20 @@ namespace PowerUpSystem.Scripts
             if (PowerUpSystemFacade.Instance != null)
             {
                 PowerUpSystemFacade.Instance.UpdateEffects(this, Time.deltaTime);
+            }
+
+            InventoryManager inventory = _inventoryManager;
+            if (inventory != null)
+            {
+                if (Input.GetKeyDown(_cycleNextKey))
+                {
+                    inventory.SelectNextPowerUp();
+                }
+
+                if (Input.GetKeyDown(_cyclePreviousKey))
+                {
+                    inventory.SelectPreviousPowerUp();
+                }
             }
 
             if (Input.GetKeyDown(_activateKey))

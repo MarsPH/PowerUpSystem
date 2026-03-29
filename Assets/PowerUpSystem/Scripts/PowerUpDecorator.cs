@@ -28,6 +28,8 @@ namespace PowerUpSystem.Scripts
         {
             return new PowerUpDecorator(powerUpWrapped?.Clone());
         }
+
+        public override PowerUpType? GetUiType() => powerUpWrapped?.GetUiType();
     
     }
 }
